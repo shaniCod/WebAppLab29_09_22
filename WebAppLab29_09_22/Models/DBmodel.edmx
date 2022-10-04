@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ClasslectureModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="relationship">
+          <Key>
+            <PropertyRef Name="RID" />
+          </Key>
+          <Property Name="RID" Type="int" Nullable="false" />
+          <Property Name="SID" Type="int" />
+          <Property Name="TID" Type="int" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="SID" />
+          </Key>
+          <Property Name="SID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Subjects" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="TID" />
+          </Key>
+          <Property Name="TID" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Subjects" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_relationship_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+          <End Role="relationship" Type="Self.relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="SID" />
+            </Principal>
+            <Dependent Role="relationship">
+              <PropertyRef Name="SID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_relationship_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="0..1" />
+          <End Role="relationship" Type="Self.relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TID" />
+            </Principal>
+            <Dependent Role="relationship">
+              <PropertyRef Name="TID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ClasslectureModelStoreContainer">
+          <EntitySet Name="relationship" EntityType="Self.relationship" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_relationship_Student" Association="Self.FK_relationship_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="relationship" EntitySet="relationship" />
+          </AssociationSet>
+          <AssociationSet Name="FK_relationship_Teacher" Association="Self.FK_relationship_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="relationship" EntitySet="relationship" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ClasslectureModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ClasslectureEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="relationships" EntityType="ClasslectureModel.relationship" />
+          <EntitySet Name="Students" EntityType="ClasslectureModel.Student" />
+          <EntitySet Name="Teachers" EntityType="ClasslectureModel.Teacher" />
+          <AssociationSet Name="FK_relationship_Student" Association="ClasslectureModel.FK_relationship_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="relationship" EntitySet="relationships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_relationship_Teacher" Association="ClasslectureModel.FK_relationship_Teacher">
+            <End Role="Teacher" EntitySet="Teachers" />
+            <End Role="relationship" EntitySet="relationships" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="relationship">
+          <Key>
+            <PropertyRef Name="RID" />
+          </Key>
+          <Property Name="RID" Type="Int32" Nullable="false" />
+          <Property Name="SID" Type="Int32" />
+          <Property Name="TID" Type="Int32" />
+          <NavigationProperty Name="Student" Relationship="ClasslectureModel.FK_relationship_Student" FromRole="relationship" ToRole="Student" />
+          <NavigationProperty Name="Teacher" Relationship="ClasslectureModel.FK_relationship_Teacher" FromRole="relationship" ToRole="Teacher" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="SID" />
+          </Key>
+          <Property Name="SID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Subjects" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="relationships" Relationship="ClasslectureModel.FK_relationship_Student" FromRole="Student" ToRole="relationship" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="TID" />
+          </Key>
+          <Property Name="TID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Subjects" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="relationships" Relationship="ClasslectureModel.FK_relationship_Teacher" FromRole="Teacher" ToRole="relationship" />
+        </EntityType>
+        <Association Name="FK_relationship_Student">
+          <End Type="ClasslectureModel.Student" Role="Student" Multiplicity="0..1" />
+          <End Type="ClasslectureModel.relationship" Role="relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="SID" />
+            </Principal>
+            <Dependent Role="relationship">
+              <PropertyRef Name="SID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_relationship_Teacher">
+          <End Type="ClasslectureModel.Teacher" Role="Teacher" Multiplicity="0..1" />
+          <End Type="ClasslectureModel.relationship" Role="relationship" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TID" />
+            </Principal>
+            <Dependent Role="relationship">
+              <PropertyRef Name="TID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ClasslectureModelStoreContainer" CdmEntityContainer="ClasslectureEntities">
+          <EntitySetMapping Name="relationships">
+            <EntityTypeMapping TypeName="ClasslectureModel.relationship">
+              <MappingFragment StoreEntitySet="relationship">
+                <ScalarProperty Name="TID" ColumnName="TID" />
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="RID" ColumnName="RID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="ClasslectureModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="Subjects" ColumnName="Subjects" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="SID" ColumnName="SID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teachers">
+            <EntityTypeMapping TypeName="ClasslectureModel.Teacher">
+              <MappingFragment StoreEntitySet="Teacher">
+                <ScalarProperty Name="Subjects" ColumnName="Subjects" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="TID" ColumnName="TID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
